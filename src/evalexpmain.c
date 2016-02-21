@@ -96,6 +96,30 @@ int main(int argc, const char *argv[]) {
 
     printf("%d\n", evalexp(e5)); // should print 2000
 
+    /**
+     * Test 3
+     */
+    l = NULL;
+    l = cons(mkconstant(3), l);
+    l = cons(mkvar("x"), l);
+    e2 = mkopapp(isplus, l);
+
+    l = NULL;
+    l = cons(mkconstant(9), l);
+    l = cons(mkvar("x"), l);
+    e5 = mkopapp(isplus, l);
+
+    e4 = mklet("x", mkconstant(4), e5);
+
+    l = NULL;
+    l = cons(e4, l);
+    l = cons(mkvar("x"), l);
+    e3 = mkopapp(isplus, l);
+
+    e1 = mklet("x", mklet("x", mkconstant(2), e2), e3);
+
+    printf("%d\n", evalexp(e1)); // should print 18
+
     return 0;
 }
 
