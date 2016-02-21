@@ -49,6 +49,9 @@ struct explist *cons(struct exp *e, struct explist *l) {
 // main for testing
 
 int main(int argc, const char *argv[]) {
+    /**
+     * Test 1
+     */
     struct exp *e1, *e2;
     struct explist *l;
 
@@ -67,6 +70,31 @@ int main(int argc, const char *argv[]) {
     e1 = mklet("x", e1, e2);
 
     printf("%d\n", evalexp(e1)); // should print  1000
+
+    /**
+     * Test 2
+     */
+    struct exp *e3, *e4, *e5;
+
+    l = NULL;
+    l = cons(mkconstant(5), l);
+    l = cons(mkconstant(3), l);
+    l = cons(mkconstant(2), l);
+    e1 = mkopapp(isplus, l);
+
+    l = NULL;
+    l = cons(mkvar("y"), l);
+    l = cons(mkvar("x"), l);
+    l = cons(mkvar("z"), l);
+    e2 = mkopapp(ismult, l);
+
+    e3 = mklet("x", e1, e2);
+
+    e4 = mklet("y", mkconstant(5), e3);
+
+    e5 = mklet("z", mkconstant(40), e4);
+
+    printf("%d\n", evalexp(e5)); // should print 2000
 
     return 0;
 }
