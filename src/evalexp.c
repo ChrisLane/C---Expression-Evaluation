@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <ctype.h>
 #include "evalexp.h"
 
 /**
@@ -132,16 +131,16 @@ int evalExpVars(struct exp *e, struct variableList *variables) {
             return evalExpList(e->exps, e->op, variables);
         case islet :
             if (inVariables(variables, e->bvar)) {
-                int oldVal = getVariableValue(e->bvar, variables);
+                int val = getVariableValue(e->bvar, variables);
                 int evaluated = evalExpVars(e->bexp, variables);
-                int toReturn = evalExpVars(e->body, addVariable(variables, e->bvar, evaluated));
-                addVariable(variables, e->bvar, oldVal);
-                return toReturn;
+                int result = evalExpVars(e->body, addVariable(variables, e->bvar, evaluated));
+                addVariable(variables, e->bvar, val);
+                return result;
             } else {
                 int evaluated = evalExpVars(e->bexp, variables);
-                int toReturn = evalExpVars(e->body, addVariable(variables, e->bvar, evaluated));
+                int result = evalExpVars(e->body, addVariable(variables, e->bvar, evaluated));
                 deleteVariable(variables, e->bvar);
-                return toReturn;
+                return result;
             }
     }
     return 0;
